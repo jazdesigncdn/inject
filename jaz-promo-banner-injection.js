@@ -232,8 +232,8 @@
     document.body.appendChild(layer);
     var fly = layer.querySelector(".jzp-flyer"),
       ban = layer.querySelector(".jzp-ban");
-    var prevOv = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    // var prevOv = document.body.style.overflow; crops the page, removes scrollbar.
+    // document.body.style.overflow = "hidden";
 
     function center() {
       var w = fly.getBoundingClientRect().width || 580;
@@ -251,7 +251,7 @@
         function (e) {
           if (e.animationName !== "jzpOut") return;
           layer.remove();
-          document.body.style.overflow = prevOv;
+          // document.body.style.overflow = prevOv; use with var prevOv if you want to prevent page scrolling
           window.removeEventListener("resize", center);
         },
         { once: true },
