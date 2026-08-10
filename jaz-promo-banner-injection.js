@@ -23,7 +23,7 @@
   var _promoactive = "kitchenguide";
 
   /* Pages where NO promo ever shows (path prefix match, global). */
-  var _nodisplay = ["/kitchen-guide", "/terms", "/privacy"];
+  var _nodisplay = ["/kitchen-guide", "/terms", "/privacy", "/store"];
 
   /* All promos. Set _promoactive above to one of these keys. */
   var _promos = {
