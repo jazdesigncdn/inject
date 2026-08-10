@@ -67,14 +67,32 @@
     if (_nodisplay[i] && _url.indexOf(_nodisplay[i].toLowerCase()) !== -1) return;
   }
 
-  /* ---- once per tab session (shared by bar + animation) ---- */
-  var KEY = "jazpromo:" + _promoid;
+  /* ---- session flags (separate for bar-kill vs animation-shown) ---- */
+  var KILL = "jazpromo:killed:" + _promoid;
+  var ANIM = "jazpromo:animshown:" + _promoid;
   var nav = (performance.getEntriesByType && performance.getEntriesByType("navigation")[0]) || {};
   var isReload = nav.type === "reload";
+  /* reload / new tab = fresh session: clear both flags */
   try {
-    if (!isReload && sessionStorage.getItem(KEY)) return;
-    sessionStorage.setItem(KEY, "1");
+    if (isReload) {
+      sessionStorage.removeItem(KILL);
+      sessionStorage.removeItem(ANIM);
+    }
   } catch (e) {}
+  function flagGet(k) {
+    try {
+      return sessionStorage.getItem(k);
+    } catch (e) {
+      return null;
+    }
+  }
+  function flagSet(k) {
+    try {
+      sessionStorage.setItem(k, "1");
+    } catch (e) {}
+  }
+  /* bar dismissed earlier this session = show nothing at all */
+  if (flagGet(KILL)) return;
 
   var inIframe = (function () {
     try {
@@ -178,6 +196,7 @@
     document.body.appendChild(bar);
     bar.querySelector(".jzp-x").addEventListener("click", function (e) {
       e.stopPropagation();
+      flagSet(KILL);
       bar.remove();
     });
     bar.addEventListener("click", function (e) {
@@ -287,10 +306,13 @@
     var st = document.createElement("style");
     st.textContent = css;
     document.head.appendChild(st);
-    /* bar is always shown on allowed pages */
+    /* bar is always shown on allowed pages (unless killed, handled above) */
     showBar();
-    /* animation also runs where the browser allows it */
-    if (!inIframe && !reduced) showAnimated();
+    /* animation runs once per session, on the first allowed page only */
+    if (!inIframe && !reduced && !flagGet(ANIM)) {
+      flagSet(ANIM);
+      showAnimated();
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
