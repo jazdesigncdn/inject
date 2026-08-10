@@ -22,8 +22,8 @@
   /* Which promo is live. "" = nothing runs at all. */
   var _promoactive = "kitchenguide";
 
-  /* Pages where NO promo ever shows (path prefix match, global). */
-  var _nodisplay = ["/kitchen-guide", "/terms", "/privacy", "/store"];
+  /* Pages where the promo MAY show (substring match anywhere in URL). Empty = nowhere. */
+  var _allowdisplay = ["", "/about", "/services"];
 
   /* All promos. Set _promoactive above to one of these keys. */
   var _promos = {
@@ -61,11 +61,23 @@
   var _promolinktext = P.linktext;
   var _promolinkurl = P.linkurl;
 
-  /* ---- suppressed pages (substring match anywhere in URL) ---- */
-  var _url = (location.pathname + location.search).toLowerCase();
-  for (var i = 0; i < _nodisplay.length; i++) {
-    if (_nodisplay[i] && _url.indexOf(_nodisplay[i].toLowerCase()) !== -1) return;
+  /* ---- allowed pages only; "" = homepage (root path) exactly, others = substring match ---- */
+  var _path = location.pathname.toLowerCase();
+  var _url = (_path + location.search).toLowerCase();
+  var _ok = false;
+  for (var i = 0; i < _allowdisplay.length; i++) {
+    var _a = _allowdisplay[i].toLowerCase();
+    if (_a === "") {
+      if (_path === "/" || _path === "") {
+        _ok = true;
+        break;
+      } /* homepage only */
+    } else if (_url.indexOf(_a) !== -1) {
+      _ok = true;
+      break;
+    }
   }
+  if (!_ok) return;
 
   /* ---- session flags (separate for bar-kill vs animation-shown) ---- */
   var KILL = "jazpromo:killed:" + _promoid;
