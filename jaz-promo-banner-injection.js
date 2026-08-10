@@ -61,10 +61,10 @@
   var _promolinktext = P.linktext;
   var _promolinkurl = P.linkurl;
 
-  /* ---- suppressed pages ---- */
-  var _path = location.pathname.toLowerCase();
+  /* ---- suppressed pages (substring match anywhere in URL) ---- */
+  var _url = (location.pathname + location.search).toLowerCase();
   for (var i = 0; i < _nodisplay.length; i++) {
-    if (_nodisplay[i] && _path.indexOf(_nodisplay[i].toLowerCase()) === 0) return;
+    if (_nodisplay[i] && _url.indexOf(_nodisplay[i].toLowerCase()) !== -1) return;
   }
 
   /* ---- once per tab session (shared by bar + animation) ---- */
