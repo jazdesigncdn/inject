@@ -3,6 +3,9 @@
   Squarespace: Settings > Advanced > Code Injection > FOOTER
   uses script tag to inject this entire block.
 
+  UPDATE LOCATION
+  https://github.com/jazdesigncdn/inject
+
   HOW TO USE
   1. Pick which promo is live by setting _promoactive to its key
      (e.g. "kitchenguide"). Set _promoactive = "" to run nothing.
@@ -23,7 +26,7 @@
   var _promoactive = "kitchenguide";
 
   /* Pages where the promo MAY show (substring match anywhere in URL). Empty = nowhere. */
-  var _allowdisplay = ["", "/guidance", "/inspiration", "/everyday-living"];
+  var _allowdisplay = ["", "/guidance", "/inspiration", "/everyday-living/nourish-and-entertain"];
 
   /* All promos. Set _promoactive above to one of these keys. */
   var _promos = {
