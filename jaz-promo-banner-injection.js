@@ -23,7 +23,7 @@
   var _promoactive = "kitchenguide";
 
   /* Pages where the promo MAY show (substring match anywhere in URL). Empty = nowhere. */
-  var _allowdisplay = ["", "/about", "/services"];
+  var _allowdisplay = ["", "/guidance", "/inspiration", "/everyday-living"];
 
   /* All promos. Set _promoactive above to one of these keys. */
   var _promos = {
